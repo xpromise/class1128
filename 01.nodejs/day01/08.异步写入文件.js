@@ -23,7 +23,7 @@
 const fs = require('fs');
 
 //异步写入文件
-fs.writeFile('./c.txt', 'yyyyy', {flag: 'a', mode: 0o666}, error => {
+fs.writeFile('./d.txt', 'yyyyy', {flag: 'a', mode: 0o666}, error => {
   // console.log(error); // null 没有错误
   /*
   { Error: EPERM: operation not permitted, open 'C:\Users\web\Desktop\1128\class1128\01.nodejs\day01\b.txt'
