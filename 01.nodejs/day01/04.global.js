@@ -20,6 +20,18 @@
 
 setTimeout(() => {
   console.log(1);
+  
+  setTimeout(() => {
+    console.log(5);
+  }, 0)
+  
+  setImmediate(() => {
+    console.log(6);
+  })
+  
+  process.nextTick(() => {
+    console.log(7);
+  })
 }, 0)
 
 setImmediate(() => {
@@ -31,6 +43,12 @@ process.nextTick(() => {
 })
 
 console.log(4);
+/*
+  回调队列 [setTimeout1, setImmediate1, process1]
+          [setImmediate1, setTimeout2, setImmediate2, process2]
+  4 3 1 7 2 6 5
+ */
+
 /*
   nodejs中事件轮询机制， 借助c/c++写的libuv实现的
   
