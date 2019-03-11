@@ -11,7 +11,7 @@
 const mongoose = require('mongoose');
 // 2. 连接本地mongoDB数据库
 const promise = new Promise((resolve, reject) => {
-  mongoose.connect('mongodb://localhost:27017/mongoose_test', { useNewUrlParser: true , useCreateIndex: true});
+  mongoose.connect('mongodb://localhost:27017/mongoose_test', {useNewUrlParser: true, useCreateIndex: true});
   
   mongoose.connection.once('open', err => {
     if (!err) {
@@ -23,7 +23,6 @@ const promise = new Promise((resolve, reject) => {
     }
   })
 })
-
 
 promise
   .then(() => {
