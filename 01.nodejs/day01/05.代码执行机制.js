@@ -1,4 +1,4 @@
-setTimeout(() => {
+/*setTimeout(() => {
   console.log(1);
 }, 0)
 
@@ -29,7 +29,7 @@ process.nextTick(() => {
   console.log(8);
 })
 
-console.log(9);
+console.log(9);*/
 
 /*
   宏任务
@@ -42,3 +42,28 @@ console.log(9);
     如果没有就检查是否有宏任务，如果有就执行，执行完后又检查是否微任务，如果又就执行，如果没有才去检查宏任务
     微任务：同一层先执行，下一层后面执行
  */
+
+setTimeout(() => {
+  console.log(1);
+  
+  setTimeout(() => {
+    console.log(2);
+  }, 0)
+  
+  setImmediate(() => {
+    console.log(3);
+  })
+  
+  for (var i = 0; i < 1000000000; i++) {
+    var arr = []
+  }
+  
+}, 0)
+
+setImmediate(() => {
+  console.log(4);
+})
+
+for (var i = 0; i < 100000; i++) {
+  var arr = []
+}
