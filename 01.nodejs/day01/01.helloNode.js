@@ -19,7 +19,7 @@ console.log('hello node111');
       git remote remove origin 删除关联
     4. 将本地代码推送到远程仓库去
       git push -u origin master
-      
-      git clone xxxxx  
+
+      git clone xxxxx
       git pull origin master
  */
