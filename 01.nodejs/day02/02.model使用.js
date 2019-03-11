@@ -63,9 +63,15 @@ promise
         Model.deleteOne(查询条件)
         Model.deleteMany(查询条件)
      */
-  
+    // const result = await Students.deleteOne({age: 21});
+    
+    // const result = await Students.updateMany({}, {$inc: {age: 1}});  //增加一岁
+    // const result = await Students.updateOne({name: '艾斯'}, {age: 19});
+    
+    const result = await Students.find({name: /^艾/}) //模糊匹配
+    // const result = await Students.find().sort({age: -1});  //对找到的元素进行排序
     // const result = await Students.find({age: {$in: [16, 20]}}, {__v: 0, _id: 0, hobby: 0, info: 0});  //如果需要的字段更多，不需要的更少
-    const result = await Students.find({age: {$in: [16, 20]}}, {name: 1, age: 1, _id: 0}); //如果需要的更少，不需要的更多
+    // const result = await Students.find({age: {$in: [16, 20]}}, {name: 1, age: 1, _id: 0}); //如果需要的更少，不需要的更多
     // const result = await Students.find({$or: [{age: {$lt: 18}}, {age: {$gt: 20}}]});
     
     // const result = await Students.find({age: {$lte: 18}});
