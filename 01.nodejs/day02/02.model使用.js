@@ -97,8 +97,11 @@ promise
         console.log(err);
       }
     })*/
+    console.log(result);
+    console.log(typeof result);  //创建好的文档对象
+    result[0].age = 26;
+    console.log(result);
     
-    console.log(result);  //创建好的文档对象
     
     
     
