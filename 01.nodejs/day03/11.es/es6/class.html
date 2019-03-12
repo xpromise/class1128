@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!--
+  class 类， 一个构造函数的语法糖
+  阮一峰： http://es6.ruanyifeng.com/
+-->
+<script type="text/javascript">
+  /*function Person(name, age) {
+    //为了给实例对象添加属性
+    this.name = name;
+    this.age = age;
+  }
+
+  Person.prototype.setName = function (name) {
+    this.name = name;
+  }
+
+  function Son(name, age, sex) {
+    //通过调用Person给实例对象添加name, age属性
+    Person.call(this, name, age);
+    this.sex = sex;
+  }
+
+  Son.prototype.__proto__ = Person.prototype;
+  Son.prototype.setAge = function (age) {
+    this.age = age;
+  }
+
+  const p1 = new Person('jack', 18);
+  console.log(p1);
+  const s1 = new Son('rose', 16, '女');
+  console.log(s1);*/
+
+  class Person {
+    constructor (name, age) {
+      //给类的实例对象添加属性
+      this.name = name;
+      this.age = age;
+    }
+    //给类的实例添加公共方法
+    setName (name) {
+      this.name = name;
+    }
+  }
+
+
+  class Son extends Person {
+    constructor (name, age, sex) {
+      //当你使用extends关键字，并且又声明constructor方法，就必须再constructor方法里面调用super()
+      super(name, age);  //调用父类，执行父类的constructor方法，让子类的实例对象就有属性，并且还能继承父类的公共方法
+      this.sex = sex;
+    }
+    setAge (age) {
+      this.age = age;
+    }
+  }
+
+  const p1 = new Person('jack', 18);
+  console.log(p1);
+
+  const s1 = new Son('rose', 16, '女');
+  console.log(s1);
+
+</script>
+</body>
+</html>
