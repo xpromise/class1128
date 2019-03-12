@@ -54,10 +54,6 @@ setTimeout(() => {
     console.log(3);
   })
   
-  for (var i = 0; i < 1000000000; i++) {
-    var arr = []
-  }
-  
 }, 0)
 
 setImmediate(() => {
