@@ -58,9 +58,9 @@ app.get('/', (req, res) => {
   // res.json({name: 111, age: 222});
   // res.download('./01.闭包.html');
   // res.sendFile(__dirname + '\\01.闭包.html');
-  // res.redirect('http://www.atguigu.com');
-  res.set('x-xxx', 'xxxxxxxx');
-  res.status(301).end('123456');
+  // res.redirect(301, 'http://www.atguigu.com');
+  // res.set('x-xxx', 'xxxxxxxx');
+  res.end('123456');
 })
 
 app.get('/shop/a', (req, res) => {
