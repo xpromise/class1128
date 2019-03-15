@@ -2,6 +2,12 @@
   路由器管理模块,分类管理路由
  */
 const {Router, urlencoded} = require('express');
+/*
+  sha1加密库
+    1. 以不可逆的方法加密的
+    2. 同样的明文加密后会得到同样的密文
+ */
+const sha1 = require('sha1');
 
 const Users = require('../models/users');
 //创建路由器对象: 相当于一个小型的app应用对象(功能更少)
@@ -14,7 +20,7 @@ router.use(urlencoded({extended: true}));
 router.post('/login', async (req, res) => {
   const {username, password} = req.body;
   
-  const user = await Users.findOne({username, password});
+  const user = await Users.findOne({username, password: sha1(password)});
   
   if (!user) {
     res.send('用户名或密码错误');
@@ -77,7 +83,7 @@ router.post('/register', async (req, res) => {
   }
   
   // 4. 保存用户数据 - 数据库
-  const result = await Users.create({username, password, email});
+  const result = await Users.create({username, password: sha1(password), email});
   console.log(result);
   
   // 5. 返回用户注册成功，跳转到登录页面

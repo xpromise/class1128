@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!--
+  模板资源的语法:
+    < %=  % >  输出转义的数据到模板页面上,  安全性更好
+      不能相信用户的任何输入, 所有输入都得转义处理
+    < %-  % >  输出非转义的数据到模板页面上
+    < % % >  能写任意的js代码，没有任何输出到页面上
+-->
+<form action="/login" method="post">
+  用户名: <input type="text" name="username"> <%= errMsg %> <br><br>
+  密码: <input type="password" name="password"> <%- errMsg %> <br><br>
+  <input type="submit" value="登录">
+</form>
+
+<% data.forEach(item => { %>
+  <%= item %>
+<% }) %>
+
+</body>
+</html>
