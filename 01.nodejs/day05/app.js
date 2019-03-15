@@ -19,8 +19,17 @@ app.use(express.urlencoded({extended: true}));
 db
   .then(() => {
     //登录路由
-    app.post('/login', (req, res) => {
-    
+    app.post('/login',async (req, res) => {
+      const {username, password} = req.body;
+      
+      const user = await Users.findOne({username, password});
+      
+      if (!user) {
+        res.send('用户名或密码错误');
+      } else {
+        res.send('登录成功');
+      }
+      
     })
 
     //注册路由
@@ -87,7 +96,6 @@ db
     
   })
   .catch(err => console.log(err))
-
 
 
 app.listen(3000, err => {
