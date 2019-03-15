@@ -25,7 +25,8 @@ router.post('/login', async (req, res) => {
   if (!user) {
     res.render('login', {errMsg: '用户名或密码错误', username});
   } else {
-    // res.render('user-center');  //不能改变网址
+    //返回一个代表用户登录信息的cookie给浏览器
+    res.cookie('userId', user.id, {maxAge: 1000 * 3600 * 24 * 7});
     res.redirect('/usercenter'); //只有重定向才能改变网址
   }
   
