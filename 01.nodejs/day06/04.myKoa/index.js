@@ -2,20 +2,22 @@ const MyKoa = require('./js/application');
 
 const app = new MyKoa();
 
-app.use((req, res, next) => {
+app.use((ctx, next) => {
   console.log(111);
   next();
 })
 
-app.use((req, res, next) => {
+app.use((ctx, next) => {
   console.log(222);
   
   next();
 })
 
-app.use((req, res, next) => {
+app.use((ctx, next) => {
   console.log(333);
-  res.body = 'send data';
+  console.log(ctx.request.query);
+  ctx.response.set('xxx', 'xxxxx');
+  ctx.body = 'send data';
   // next();
 })
 
