@@ -2,18 +2,21 @@ const MyKoa = require('./js/application');
 
 const app = new MyKoa();
 
-
-app.use((req, res) => {
+app.use((req, res, next) => {
   console.log(111);
+  next();
 })
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   console.log(222);
+  
+  next();
 })
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   console.log(333);
-  res.end('send data');
+  res.body = 'send data';
+  // next();
 })
 
 app.listen(3000, err => {
