@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>三级联动</title>
+</head>
+<body>
+
+<select id="province">
+	<option>请选择省份</option>
+</select> 省
+
+<select id="city">
+	<option>请选择市</option>
+</select> 市
+
+<select id="county">
+	<option>请选择区(县)</option>
+</select> 区(县)
+
+<script type="text/javascript" src="./js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+  //$.on('ready', function () {})
+  /*
+    ready: DOM构建完成, 就会触发事件的回调函数  --> DOMContentLoaded
+    load: 等待页面的所有资源加载完成, 才会触发事件的回调函数
+   */
+	$(function () {
+	  //获取DOM元素
+    const $province = $('#province');
+    const $city = $('#city');
+
+    // 一上来请求所有省份数据
+    // 请求的服务器地址和打开当前页面的服务器地址是同一个时,可以简写为 '/'  --> 'http://localhost:4000/'
+    $.get('/province', function (result) {
+      // 处理请求回来的数据
+      // jquery会自动的将json数组转化成js对象/数组
+      if (result.status === 0) {
+        // 数据响应成功, 将请求回来的data数据添加到省份中
+        /*let html = '';
+        result.data.forEach((item) => {
+          // 导致多次重排重绘
+          // $province.append(`<option>${item.name}</option>`);
+          html += `<option>${item.name}</option>`;
+        })*/
+        const html = result.data.reduce((previous, current) => previous + `<option value="${current.province}">${current.name}</option>`, '');
+        // 只会产生一次的重排重绘
+        $province.append(html);
+      } else {
+        // 数据响应失败, 提示错误
+        alert(result.error);
+      }
+    })
+
+    // 当选中某个省份时, 需要请求对应城市的数据进行展示
+    $province.change(function () {
+      console.log(this.value);
+      const province = this.value;
+      // 发送请求,请求城市数据
+      $.get('/city', {province}, function (result) {
+        if (result.status === 0) {
+          const html = result.data.reduce((previous, current) => previous + `<option value="${current.city}">${current.name}</option>`, '<option>请选择市</option>');
+          $city.html(html);
+        } else {
+          alert(result.error);
+        }
+      })
+    })
+
+  })
+
+</script>
+</body>
+</html>
