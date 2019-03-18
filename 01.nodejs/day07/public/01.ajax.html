@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">点击按钮发送ajax请求</button>
+<script type="text/javascript">
+  document.getElementById('btn').onclick = function () {
+    //发送ajax请求
+    /*
+      步骤：
+        1. 创建xhr对象
+        2. 绑定事件监听
+          xhr.onreadystatechange = () => {
+            xhr.readyState ajax内部状态
+              0: 代表xhr对象被创建好了，初始化状态
+              1: 代表xhr.send方法还未调用（还未发送请求），还来及设置请求头相关信息
+              2: 代表xhr.send方法已经调用（已经发送请求了），并且接受到了部分响应数据（响应首行和响应头 --> 响应状态码，响应头信息）
+              3: 代表接受了部分/全部响应体数据（数据小就全部接受了，数据大就还没接受完）
+              4: 代表接受了全部响应体数据（响应完成了，全部接受完了）
+
+            xhr.status 响应状态码
+          }
+        3. 设置请求信息
+          xhr.open(请求方式, 请求地址(get请求的查询字符串参数));
+          xhr.setRequestHeader(key, value); 设置请求头信息
+        4. 发送请求
+          xhr.send(body(post请求的请求体参数-要求以urlencoded方法编码));
+
+        问题:
+          GET请求
+            chrome/firefox 能够缓存get请求, 但是缓存是需要访问服务器然后才走的协商缓存 状态码304
+            ie 能够缓存get请求, 但是缓存是没有访问服务器,直接自己浏览器实现了强制缓存 状态码200
+              -->  同样的请求拿不到最新的数据
+              解决: 让请求每次都不一样, 这样就不会缓存了.  http://localhost:3000/ajax?date= Date.now() / Math.random()
+              缺点: 当前请求就没办法缓存了
+
+     */
+    // 1. 创建xhr对象
+    const xhr = new XMLHttpRequest();
+    // 2. 绑定事件监听
+    //当readystate值发生变化的时候，就触发当前事件
+    xhr.onreadystatechange = function () {
+      console.log('onreadystatechange()');
+      //接受响应的内容
+      if (xhr.readyState === 2) {
+        console.log('来到了readyState===2的时候');
+        console.log(xhr.status);
+        console.log(xhr.getResponseHeader('ETag'));
+      }
+      if (xhr.readyState === 3) {
+        console.log('来到了readyState===3的时候');
+        console.log(xhr.responseText);  //响应数据
+      }
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log('来到了readyState===4的时候');
+        console.log(xhr.responseText);  //响应数据
+      }
+    }
+    // 3. 设置请求信息
+    xhr.open('GET', 'http://localhost:3000/ajax?username=jack&password=123&date=' + Date.now());
+    xhr.setRequestHeader('xxxx', 'xxxxx');
+    // xhr.open('POST', 'http://localhost:3000/ajax');
+    // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    // 4. 发送请求
+    xhr.send();
+    // xhr.send('username=jack&password=123');
+  }
+</script>
+</body>
+</html>
