@@ -20,13 +20,13 @@
 
 <script type="text/javascript" src="./js/jquery-1.12.4.js"></script>
 <script type="text/javascript">
-  //$.on('ready', function () {})
   /*
     ready: DOM构建完成, 就会触发事件的回调函数  --> DOMContentLoaded
+      $.on('ready', function () {})
     load: 等待页面的所有资源加载完成, 才会触发事件的回调函数
    */
 	$(function () {
-	  //获取DOM元素
+	  // 获取包装了DOM元素的jQuery对象
     const $province = $('#province');
     const $city = $('#city');
 
@@ -60,6 +60,20 @@
       $.get('/city', {province}, function (result) {
         if (result.status === 0) {
           const html = result.data.reduce((previous, current) => previous + `<option value="${current.city}">${current.name}</option>`, '<option>请选择市</option>');
+          $city.html(html);
+        } else {
+          alert(result.error);
+        }
+      })
+    })
+
+    $city.change(function () {
+      const province = $province.val();
+      const city = this.value;
+      // 发送请求,请求区县的数据
+      $.get('/county', {province, city}, function (result) {
+        if (result.status === 0) {
+          const html = result.data.reduce((previous, current) => previous + `<option value="${current.county}">${current.name}</option>`, '<option>请选择区(县)</option>');
           $city.html(html);
         } else {
           alert(result.error);
