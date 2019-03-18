@@ -61,8 +61,10 @@ app.use(session({
   resave: false, // 如果session没有修改，就不会重新保存
   store: new MongoStore({
     url: 'mongodb://localhost:27017/exec',
-    touchAfter: 24 * 3600 //24小时内更新一次，无论发生多少请求（除了那些改变会话数据的东西）
-  })
+    touchAfter: 24 * 3600, //24小时内更新一次，无论发生多少请求（除了那些改变会话数据的东西）
+    ttl: 3600 * 24 * 7  //session保存期限7天
+  }),
+  cookie: {maxAge: 1000 * 3600 * 24 * 7} //cookie有效期7天
 }));
 
 //连接数据库，才能使用其中的内容
