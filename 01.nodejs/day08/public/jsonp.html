@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">点击发送请求</button>
+<script type="text/javascript">
+
+  document.getElementById('btn').onclick = function () {
+    /*
+      1. jsonp
+        - 特点：
+          1. 利用script标签天然跨域跨域的特性解决跨域的， 民间推出的
+          2. 兼容性极好
+     */
+    //创建一个script标签
+    const script = document.createElement('script');
+    //设置了响应成功的回调函数
+    window.jsoncallback = function (data) {
+      console.log(data);
+    }
+    //设置script的src属性， 向指定服务器发送请求
+    script.src = 'http://localhost:3000/?callback=jsoncallback';
+    //添加到body中生效
+    document.body.appendChild(script);
+  }
+
+</script>
+</body>
+</html>

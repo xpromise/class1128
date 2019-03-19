@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">点击按钮发送ajax请求</button>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+  $('#btn').click(function () {
+    $.get('http://localhost:3000/cors', {username: 'bob', age: 18}, function (data) {
+      console.log(data);
+    })
+
+  })
+</script>
+</body>
+</html>
