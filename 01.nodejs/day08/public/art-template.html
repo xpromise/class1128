@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id="wrap"></div>
+
+<script type="text/html" id="tpl">
+  {{if flag}}
+    {{each data}}
+      <h2>{{$index}} - {{$value}}</h2>
+    {{/each}}
+  {{/if}}
+</script>
+
+<script type="text/javascript" src="./jquery-1.12.4.js"></script>
+<script type="text/javascript" src="./template-web.js"></script>
+<script type="text/javascript">
+  /*
+    1. 引入template-web.js文件
+    2. 创建模板代码
+      - 创建script标签，将type改为text/html
+      - 添加id属性，目的为了找到当前元素
+    3. 编译模板代码
+      template('元素id', {要渲染的数据})
+    4. 将编译后的标签字符串渲染到页面指定容器中
+
+    应用：简化写重复结构，对请求回来的数据进行遍历展示
+   */
+  const data = ['jack', 'rose'];
+  const flag = true;
+
+  const html = template('tpl', {flag, data});
+  console.log(html);
+
+  $('#wrap').html(html);
+
+</script>
+</body>
+</html>

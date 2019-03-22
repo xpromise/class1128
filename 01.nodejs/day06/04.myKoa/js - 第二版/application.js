@@ -39,6 +39,11 @@ module.exports = class Application {
   }
 }
 
+/**
+ * 负责执行中间件函数的函数
+ * @param middleware 中间件数组
+ * @return {Promise}
+ */
 function compose(middleware) {
   
   return (req, res) => {
@@ -56,3 +61,5 @@ function compose(middleware) {
     
   }
 }
+const Stream = require('stream');
+

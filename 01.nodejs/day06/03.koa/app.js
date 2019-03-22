@@ -18,8 +18,9 @@ app.use(bodyParser());
 })*/
 
 //设置路由
-app.use(_.post('/login', (ctx, next) => {
-  console.log(ctx.request.body); // { username: 'admin', password: '123123' }
+app.use(_.get('/login', (ctx, next) => {
+  console.log(ctx.query); // { username: 'admin', password: '123123' }
+  ctx.set('xxx', 'xxxx');
   ctx.body = '这是koa服务器login返回的相应~';
 }))
 
@@ -29,7 +30,7 @@ app.use(_.post('/register', (ctx, next) => {
 }))
 
 //监听端口号
-app.listen(3000, err => {
+app.listen(4000, err => {
   if (!err) console.log('服务器启动成功了');
   else console.log(err);
 })
