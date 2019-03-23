@@ -11,7 +11,7 @@ const babel = require('gulp-babel');
   开发套路：
     1. 去https://gulpjs.com/plugins/搜相关的插件  gulp-xxx
     2. 打开插件的npm仓库 看文档使用
-    3. 引入gulp插件
+    3. 下载并引入gulp插件
     4. 配置插件任务
  */
 
