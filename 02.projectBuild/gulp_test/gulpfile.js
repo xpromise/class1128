@@ -8,6 +8,9 @@ const babel = require('gulp-babel');
 const browserify = require('gulp-browserify');
 const rename = require("gulp-rename");
 const less = require('gulp-less');
+const livereload = require('gulp-livereload');
+const connect = require('gulp-connect');
+const open = require("open");
 
 // 注册任务
 /*
@@ -25,10 +28,13 @@ gulp.task('eslint', function () {
     // 对流中的文件/数据进行语法检查
     .pipe(eslint())
     .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+    .pipe(eslint.failAfterError())
+    .pipe(livereload());
 })
 
 // 语法转换
+// babel能将es6模块化语法转换为commonjs模块化语法
+// 能将es6及其以上的语法转换为es5及其以下的语法
 gulp.task('babel', () =>
   // 读取所有js文件
   gulp.src('src/js/*.js')
@@ -38,6 +44,7 @@ gulp.task('babel', () =>
     }))
     // 输出出去
     .pipe(gulp.dest('build/js'))
+    .pipe(livereload())
 );
 
 // 将commonjs的模块化语法转换成浏览器能识别语法
@@ -48,17 +55,38 @@ gulp.task('browserify', function() {
     // 重命名文件
     .pipe(rename("built.js"))
     .pipe(gulp.dest('build/js'))
+    .pipe(livereload());
 });
 
 // 将less编译成css
 gulp.task('less', function () {
   return gulp.src('./src/less/*.less')
     .pipe(less())
-    .pipe(gulp.dest('./build/css'));
+    .pipe(gulp.dest('./build/css'))
+    .pipe(livereload());
 });
 
+// 自动化 --> 自动编译  --> 自动刷新浏览器（热更新） --> 自动打开浏览器
+gulp.task('watch', function() {
+  livereload.listen();
+  // 开启服务器
+  connect.server({
+    name: 'Dev App',
+    root: ['build'],
+    port: 3000,
+    livereload: true  //热更新
+  });
+  // 打开浏览器
+  open('http://localhost:3000');
+  
+  // 监视指定文件，一旦文件发生变化，就执行后面的任务
+  gulp.watch('src/less/*.less', gulp.series('less'));
+  gulp.watch('src/js/*.js', gulp.series('js-dev'));
+});
 
 // 配置默认任务 --> 执行以上多个任务
 gulp.task('js-dev', gulp.series('eslint', 'babel', 'browserify')); // 同步顺序执行，同一时间只能执行一个任务  速度慢
 // gulp.task('default', gulp.parallel('eslint', 'babel', 'browserify')); // 异步执行，同一时间执行多个任务   速度快
-gulp.task('default', gulp.parallel('js-dev', 'less'));
+gulp.task('build', gulp.parallel('js-dev', 'less'));
+// 开发环境的指令： gulp start
+gulp.task('start', gulp.parallel('build', 'watch'));
