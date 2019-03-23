@@ -75,9 +75,9 @@
       "ecmaFeatures": {
         "module": true
       }
-    }
-  },
-  "extends": "eslint:recommended"  //eslint推荐配置，开发先不使用
+    },
+    "extends": "eslint:recommended"  //eslint推荐配置，开发先不使用
+  }
   ```
 * 运行指令: `gulp eslint`
 
