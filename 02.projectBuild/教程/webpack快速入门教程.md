@@ -456,7 +456,7 @@
         loader: 'img-loader',
         options: {
           plugins: [
-            require('imagemin-gifsicle')({
+            require('imagemin-gifsicle')({ 
               interlaced: false
             }),
             require('imagemin-mozjpeg')({
@@ -489,16 +489,16 @@
   new HtmlWebpackPlugin({
     template: './src/index.html',
     minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      useShortDoctype: true,
-      removeEmptyAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      keepClosingSlash: true,
-      minifyJS: true,
-      minifyCSS: true,
-      minifyURLs: true,
+      removeComments: true,  // 移除注释
+      collapseWhitespace: true,  // 移除空格/换行符
+      removeRedundantAttributes: true, // 移除默认值的属性
+      useShortDoctype: true,  // 使用html5的doctype
+      removeEmptyAttributes: true, // 移除空的属性
+      removeStyleLinkTypeAttributes: true, // 移除type="text/css"属性
+      keepClosingSlash: true, // 给单标签加上结束符
+      minifyJS: true, // 最小化script中js
+      minifyCSS: true, // 最小化style中css
+      minifyURLs: true, // 缩小url，使用相对路径
     }
   })
   ```
