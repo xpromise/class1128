@@ -11,6 +11,13 @@ const less = require('gulp-less');
 const livereload = require('gulp-livereload');
 const connect = require('gulp-connect');
 const open = require("open");
+const uglify = require('gulp-uglify');
+const LessAutoprefix = require('less-plugin-autoprefix');
+// https://github.com/browserslist/browserslist
+const autoprefix = new LessAutoprefix({ browsers: ["cover 99.5%", "not dead"] });
+const cssmin = require('gulp-cssmin');
+const concat = require('gulp-concat');
+const htmlmin = require('gulp-htmlmin');
 
 // 注册任务
 /*
@@ -58,12 +65,41 @@ gulp.task('browserify', function() {
     .pipe(livereload());
 });
 
+// 压缩js代码
+gulp.task('uglify', function () {
+  return gulp.src('./build/js/built.js')
+    .pipe(uglify())
+    .pipe(rename('dist.min.js'))
+    .pipe(gulp.dest('dist/js'))
+})
+
 // 将less编译成css
 gulp.task('less', function () {
   return gulp.src('./src/less/*.less')
     .pipe(less())
     .pipe(gulp.dest('./build/css'))
     .pipe(livereload());
+});
+
+// 压缩css
+gulp.task('css', function () {
+  return gulp.src('./src/less/*.less')
+    .pipe(concat('dist.min.css'))
+    .pipe(less({
+      plugins: [autoprefix]
+    }))
+    .pipe(cssmin())
+    .pipe(gulp.dest('./dist/css'))
+});
+
+// 压缩html
+gulp.task('html', () => {
+  return gulp.src('src/*.html')
+    .pipe(htmlmin({
+      collapseWhitespace: true, // 去除空格
+      removeComments: true // 去掉注释
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
 // 自动化 --> 自动编译  --> 自动刷新浏览器（热更新） --> 自动打开浏览器
@@ -86,7 +122,10 @@ gulp.task('watch', function() {
 
 // 配置默认任务 --> 执行以上多个任务
 gulp.task('js-dev', gulp.series('eslint', 'babel', 'browserify')); // 同步顺序执行，同一时间只能执行一个任务  速度慢
+gulp.task('js-prod', gulp.series('js-dev', 'uglify'));
 // gulp.task('default', gulp.parallel('eslint', 'babel', 'browserify')); // 异步执行，同一时间执行多个任务   速度快
 gulp.task('build', gulp.parallel('js-dev', 'less'));
+// 生产环境的指令: gulp prod
+gulp.task('prod', gulp.parallel('js-prod', 'css', 'html'));
 // 开发环境的指令： gulp start
-gulp.task('start', gulp.parallel('build', 'watch'));
+gulp.task('start', gulp.series('build', 'watch'));
