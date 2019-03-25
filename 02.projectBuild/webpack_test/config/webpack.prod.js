@@ -5,13 +5,17 @@ const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack');
+const WebpackMd5Hash = require('webpack-md5-hash');
 
 module.exports = {
   // 入口
-  entry: ['./src/js/app.js', './src/index.html'], //入口文件
+  entry: {
+    xxx: './src/js/app.js'
+  }, //入口文件
   // 输出
   output: {
-    filename: 'js/[name].[hash:8].js',  // 文件名称
+    filename: 'js/[name].[chunkhash:8].js',  // 文件名称
     path: resolve(__dirname, '../dist'), // 输出的文件路径
     publicPath: '/' //所有输出文件的公共路径
   },
@@ -89,9 +93,11 @@ module.exports = {
     new CleanWebpackPlugin(),
     // 提取css成一个单独文件 -- webpack4
     new MiniCssExtractPlugin({
-      filename: "css/[name].[hash:8].css",  // 文件名称
-      chunkFilename: "css/[id].[hash:8].css"
-    })
+      filename: "css/[name].[contenthash:8].css",  // 文件名称
+      // chunkFilename: "css/[id].[hash:8].css"
+    }),
+    new WebpackMd5Hash(),
+    // new webpack.HashedModuleIdsPlugin()
   ],
   // 模式
   mode: 'production',  //生产环境
