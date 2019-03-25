@@ -209,8 +209,6 @@
   * 在src/index.html添加两个img标签
 * 安装loader
 	* npm install html-loader --save-dev 
-* 修改entry
-  * entry: ['./src/js/app.js', './src/index.html']
 * 配置loader
     ```
     {
@@ -268,9 +266,10 @@
 * 安装loader
 	* npm install webpack-dev-server --save-dev 
 * 引入webpack
-  * const webpack = require('webpack');
+  * const webpack = require('webpack');  
 * 修改webpack配置对象（注意不是loader中）
     ```
+    entry: ['./src/js/app.js', './src/index.html'] // 添加html入口文件
     devtool: 'inline-source-map',  // 将编译后的代码映射回原始源代码，更容易地追踪错误和警告
     devServer: {
       contentBase: './dist',  //项目根路径
