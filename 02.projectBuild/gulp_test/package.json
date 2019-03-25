@@ -33,7 +33,8 @@
       "ecmaFeatures": {
         "module": true
       }
-    }
+    },
+    "extends": "eslint:recommended"
   },
   "dependencies": {
     "gulp-htmlmin": "^5.0.1"

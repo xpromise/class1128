@@ -5,6 +5,7 @@ import data from '../json/data';
 
 import '../less/test1.less';
 import '../less/test2.less';
+// import '../index.html';
 
 console.log(add(1, 2));
 console.log(sum(1, 2, 3, 4));
