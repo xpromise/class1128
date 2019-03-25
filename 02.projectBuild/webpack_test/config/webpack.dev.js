@@ -7,7 +7,7 @@ const webpack = require('webpack');
 
 module.exports = {
   // 入口
-  entry: './src/js/app.js', //入口文件
+  entry: ['./src/js/app.js', './src/index.html'], //入口文件
   // 输出
   output: {
     filename: './js/[name].js',  // 文件名称
@@ -69,7 +69,7 @@ module.exports = {
           },
           {
             loader: 'file-loader',
-            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.less$/],  // 处理非js、非html、非json、非less文件
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.less$/],  // 处理非js、非html、非json、非less的其他资源
             options: {
               outputPath: 'media/',
               name: '[hash:8].[ext]',
