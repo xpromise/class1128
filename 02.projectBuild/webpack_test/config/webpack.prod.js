@@ -7,6 +7,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
 const WebpackMd5Hash = require('webpack-md5-hash');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   // 入口
@@ -52,7 +53,7 @@ module.exports = {
               'less-loader',
             ]
           },
-          {
+          /*{
             test: /\.(png|jp(e?)g|gif|svg|webp)$/,
             use: [
               {
@@ -62,6 +63,42 @@ module.exports = {
                   // publicPath: './images', // 修改图片的url的路径
                   // outputPath: './images',  // 图片的输出路径
                   name: 'image/[name].[hash:8].[ext]'  // [hash:8] 就是hash值  [ext] 文件扩展名称
+                }
+              }
+            ]
+          },*/
+          {
+            test: /\.(png|jpg|gif|svg)$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  limit: 8 * 1024,  // 8kb大小以下的图片文件都用base64处理
+                  name: 'images/[name].[hash:8].[ext]'
+                }
+              },
+              {
+                loader: 'img-loader',
+                options: {
+                  plugins: [
+                    require('imagemin-gifsicle')({
+                      interlaced: false
+                    }),
+                    require('imagemin-mozjpeg')({
+                      progressive: true,
+                      arithmetic: false
+                    }),
+                    require('imagemin-pngquant')({
+                      floyd: 0.5,
+                      speed: 2
+                    }),
+                    require('imagemin-svgo')({
+                      plugins: [
+                        { removeTitle: true },
+                        { convertPathData: false }
+                      ]
+                    })
+                  ]
                 }
               }
             ]
@@ -79,7 +116,7 @@ module.exports = {
               // outputPath: 'media/',
               name: 'media/[name].[hash:8].[ext]',
             },
-          }
+          },
         ]
       }
     ]
@@ -88,6 +125,18 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html', // 以指定html为模板，创建新的html文件（有之前的结构，引入打包后生成的js、css等资源）
+      minify: {
+        removeComments: true,  // 移除注释
+        collapseWhitespace: true,  // 移除空格/换行符
+        removeRedundantAttributes: true, // 移除默认值的属性
+        useShortDoctype: true,  // 使用html5的doctype
+        removeEmptyAttributes: true, // 移除空的属性
+        removeStyleLinkTypeAttributes: true, // 移除type="text/css"属性
+        keepClosingSlash: true, // 给单标签加上结束符
+        minifyJS: true, // 最小化script中js
+        minifyCSS: true, // 最小化style中css
+        minifyURLs: true, // 缩小url，使用相对路径
+      }
     }),
     // 在输出打包资源之前，默认清除dist文件夹所有文件
     new CleanWebpackPlugin(),
@@ -97,7 +146,12 @@ module.exports = {
       // chunkFilename: "css/[id].[hash:8].css"
     }),
     new WebpackMd5Hash(),
-    // new webpack.HashedModuleIdsPlugin()
+    new webpack.HashedModuleIdsPlugin(),
+    new OptimizeCssAssetsPlugin({
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+    })
   ],
   // 模式
   mode: 'production',  //生产环境
