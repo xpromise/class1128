@@ -12,8 +12,35 @@
   <script type="text/javascript" src="../js/react.development.js"></script>
   <script type="text/javascript" src="../js/react-dom.development.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
-
   <script type="text/babel">
+    /*方式1: 工厂函数组件(简单组件)*/
+    function MyComponent1() {
+      console.log(this); // undefined
+      return <h2>方式1: 工厂函数组件(简单组件)</h2>;
+    }
+    /*方式2:  ES6类组件(复杂组件)*/
+    class MyComponent2 extends React.Component {
+      render () {
+        console.log(this); // 组件的实例对象
+        return (
+          <div>
+            <h2>方式2:  ES6类组件(复杂组件)</h2>
+            <input />
+          </div>
+        );
+      }
+    }
+    /*
+      注意事项：
+        1. 组件名首字符必须大写
+        2. 组件标签（所有jsx的标签）必须有结束符
+          单标签 <xx />: 当组件没有内容时，直接用单标签
+          双标签 <xx></xx> : 当组件有内容时，可以用双标签
+       3. 组件内返回的虚拟DOM对象，必须有且只有一个根元素
+     */
+    // 渲染到页面
+    ReactDOM.render(<MyComponent1 />, document.getElementById('example1'));
+    ReactDOM.render(<MyComponent2 />, document.getElementById('example2'));
   </script>
 </body>
 </html>
