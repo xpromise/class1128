@@ -7,5 +7,35 @@
 <body>
   <h2>前端JS框架列表</h2>
   <div id="example1"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 定义数据
+    const lists = ['jQuery', 'Bootstrap', 'Express', 'React'];
+    /*
+      目的：
+      <ul>
+        <li>{lists[0]}</li>
+        <li>{lists[1]}</li>
+        <li>{lists[2]}</li>
+        <li>{lists[3]}</li>
+      </ul>
+     */
+    // const data = [<li>jQuery</li>, <li>Bootstrap</li>, <li>Express</li>, <li>React</li>];
+    // 遍历数组的每一项值，生成一个新数组，新数组的每一项值就是遍历时回调函数的返回值
+    // const data = lists.map((item, index) => <li>{item}</li>);
+
+    // 展示数据
+    ReactDOM.render(
+      // 会自动遍历数据，展示其中的数据
+      <ul>
+        {
+          lists.map((item, index) => <li key={index}>{item}</li>)
+        }
+      </ul>
+      , document.getElementById('example1'));
+
+  </script>
 </body>
 </html>

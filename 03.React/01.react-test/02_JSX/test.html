@@ -26,6 +26,7 @@
       1. 通过直接写标签的方式定义虚拟DOM对象
       2. 在标签中如果有js代码，需要用{}包裹
      */
+
     const vDom2 = <h2 id={id} className="myClass2" >{content}<span>hello span</span></h2>;
     // 渲染到页面中
     ReactDOM.render(vDom2, document.getElementById('test2'));
