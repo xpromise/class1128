@@ -10,6 +10,8 @@
 
 <script type="text/javascript" src="../js/react.development.js"></script>
 <script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!--引入库-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
 <script type="text/javascript" src="../js/babel.min.js"></script>
 
 <script type="text/babel">
@@ -19,6 +21,58 @@
   1). 如果性别没有指定, 默认为男
   2). 如果年龄没有指定, 默认为18
   */
+  // 定义组件
+  class Person extends React.Component {
+    // 通过static定义的静态方法，在组件（Person）上
+    static propTypes = {
+      name: PropTypes.string,
+      age: PropTypes.number.isRequired,
+      sex: PropTypes.string.isRequired
+    }
+
+    static defaultProps = {
+      name: 'rose'
+    }
+    // 定义的属性/方法都是在组件的实例对象上
+    state = {
+
+    }
+
+    render () {
+      // 获取组件外向组件内传递的标签属性
+      const { name, age, sex } = this.props;
+      return <ul>
+        <li>姓名: {name}</li>
+        <li>年龄: {age}</li>
+        <li>性别: {sex}</li>
+      </ul>
+    }
+  }
+
+  // 定义数据
+  const person = {
+    name: 'jack',
+    age: 18,
+    sex: '男'
+  }
+
+  /*// 对属性值进行类型和必要性的检测
+  Person.propTypes = {
+    name: PropTypes.string,
+    age: PropTypes.number.isRequired,
+    sex: PropTypes.string.isRequired
+  }
+
+  // 默认值
+  Person.defaultProps = {
+    name: 'rose'
+  }*/
+
+  // 渲染组件
+  // 组件外向组件内传递数据，以标签属性的方式传递
+  // ReactDOM.render(<Person name={person.name} age={person.age} sex={person.sex}/>, document.getElementById('example1'));
+  // babel帮助对象识别三点运算符语法
+  ReactDOM.render(<Person {...person}/>, document.getElementById('example1'));
 
 </script>
 </body>

@@ -62,7 +62,7 @@
     handleClick = () => {
       // 读取之前的状态
       const { isLikeMe } = this.state;
-      // 更新状态
+      // 更新状态, 重新渲染组件
       this.setState({
         isLikeMe: !isLikeMe
       })
@@ -75,6 +75,8 @@
       return <h2 onClick={this.handleClick} >{isLikeMe ? '你喜欢我' : '我喜欢你'}</h2>;
     }
   }
+  // 结论：用户界面要发生变化，就更新state，导致组件重新渲染，从而更新页面
+
   // 渲染组件
   ReactDOM.render(<IsLikeMe />, document.getElementById('example'));
 </script>
