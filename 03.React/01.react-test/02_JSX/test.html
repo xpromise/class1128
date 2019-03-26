@@ -7,5 +7,28 @@
 <body>
   <div id="test1"></div>
   <div id="test2"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript">
+    // 创建虚拟DOM对象
+    const vDom3 = React.createElement('span', {}, 'hello span');
+    const vDom1 = React.createElement('h2', {id: 'myId1', className: 'myClass1'}, 'I Like React!', vDom3);
+    console.log(vDom1);
+    // 渲染到页面中
+    ReactDOM.render(vDom1, document.getElementById('test1'));
+  </script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    const id = 'myId2';
+    const content = 'I love React';
+    // 创建虚拟DOM对象
+    /*
+      1. 通过直接写标签的方式定义虚拟DOM对象
+      2. 在标签中如果有js代码，需要用{}包裹
+     */
+    const vDom2 = <h2 id={id} className="myClass2" >{content}<span>hello span</span></h2>;
+    // 渲染到页面中
+    ReactDOM.render(vDom2, document.getElementById('test2'));
+  </script>
 </body>
 </html>
