@@ -60,7 +60,7 @@
 
         return <div>
           <h1>Simple Todo List</h1>
-          <AddTodo add={this.add}/>
+          <AddTodo add={this.add} length={todoList.length}/>
           <TodoList todoList={todoList}/>
         </div>
       }
@@ -69,7 +69,8 @@
     // 定义AddTodo组件
     class AddTodo extends React.Component {
       static propTypes = {
-        add: PropTypes.func.isRequired
+        add: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired
       }
 
       constructor(props) {
@@ -79,16 +80,23 @@
 
       // 添加Todo
       addTodo = () => {
+        const msgInput = this.msgInput.current;
         // 获取文本框的值
-        const value = this.msgInput.current.value.trim();
-        // 添加到todoList中
-        this.props.add(value);
+        const value = msgInput.value.trim();
+        if (value) {
+          // 添加到todoList中
+          this.props.add(value);
+          // 清空输入框数据
+          msgInput.value = '';
+        }
       }
 
       render() {
+        const { length } = this.props;
+
         return <div>
           <input type="text" ref={this.msgInput}/>
-          <button onClick={this.addTodo}>Add #3</button>
+          <button onClick={this.addTodo}>Add #{length}</button>
         </div>
       }
     }

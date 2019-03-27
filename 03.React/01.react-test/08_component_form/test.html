@@ -17,6 +17,90 @@
     2. 输入用户名密码后, 点击登陆提示输入信息
     3. 不提交表单
   */
+
+  // 非受控组件
+  /*class Form extends React.Component {
+    constructor(props) {
+      super(props);
+      this.usernameRef = React.createRef();
+      this.passwordRef = React.createRef();
+    }
+
+    handleSubmit = (e) => {
+      // 禁止默认行为
+      e.preventDefault();
+      // 收集表单数据
+      const username = this.usernameRef.current.value;
+      const password = this.passwordRef.current.value;
+      // 发送请求 xxx
+      alert(`用户名：${username}  密码：${password}`);
+    }
+
+    render() {
+      return <form action="/" onSubmit={this.handleSubmit}>
+        用户名: <input type="text" name="username" ref={this.usernameRef} /> <br/>
+        密码: <input type="password" name="password" ref={this.passwordRef}/> <br/>
+        <input type="submit" value="登陆"/>
+      </form>
+    }
+  }*/
+
+  // 受控组件 -- 收集表单数据
+  class Form extends React.Component {
+    state = {
+      username: '',
+      password: ''
+    }
+
+    handleSubmit = (e) => {
+      // 禁止默认行为
+      e.preventDefault();
+      // 收集表单数据
+      const { username, password } = this.state;
+      // 发送请求 xxx
+      alert(`用户名：${username}  密码：${password}`);
+    }
+
+    /*usernameChange = (e) => {
+      this.setState({
+        username: e.target.value
+      })
+    }
+
+    passwordChange = (e) => {
+      this.setState({
+        password: e.target.value
+      })
+    }*/
+
+    /*change = (stateName, stateValue) => {
+      this.setState({
+        [stateName]: stateValue
+      })
+    }*/
+
+    // 高阶函数：参数是函数或者返回值是函数
+    composeChange = (name) => {
+      // 利用外面函数给内部函数传参
+      return (e) => {
+        this.setState({
+          [name]: e.target.value
+        })
+      }
+    }
+
+    render() {
+      // 不要在回调函数中写箭头函数，它会每次渲染时重新创建新的函数，性能不好
+      return <form action="/" onSubmit={this.handleSubmit}>
+        用户名: <input type="text" name="username" onChange={this.composeChange('username')}/> <br/>
+        密码: <input type="password" name="password" onChange={this.composeChange('password')}/> <br/>
+        <input type="submit" value="登陆"/>
+      </form>
+    }
+  }
+
+  ReactDOM.render(<Form />, document.getElementById('example'));
+
 </script>
 </body>
 </html>
