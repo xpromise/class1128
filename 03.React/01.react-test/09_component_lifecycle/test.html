@@ -17,6 +17,78 @@
     2. 切换时间为2S
     3. 点击按钮从界面中移除组件界面
    */
+
+  class LifeCircle extends React.Component {
+    /*
+      1. 初始化state
+      2. 初始化React.createRef()
+      3. 绑定函数的this指向（过去）
+     */
+    constructor(props) {
+      super(props);
+      console.log('constructor()');
+      this.state = {
+        isUpdated: false
+      }
+    }
+    /*
+      将来的17版本将被标记为UNSAFE，在未来18版本直接被废弃
+      这个函数一般没用
+     */
+    componentWillMount() {
+      console.log('componentWillMount()');
+    }
+    /*
+      1. 发送ajax请求
+      2. 设置异步任务 --> 绑定事件或者设置定时器等
+     */
+    componentDidMount() {
+      console.log('componentDidMount()');
+      // 设置定时器
+      setTimeout(() => {
+        /*this.setState({
+          isUpdated: true
+        })*/
+
+        ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+      }, 1000)
+    }
+    /*
+      专门用来做React性能优化的：将之前的状态/属性和当前的状态/属性进行对比，如果一样，就不更新，如果不一样就更新
+        返回值为true就更新
+        返回值为false就不更新
+    */
+    shouldComponentUpdate(prevProps, nextState) {
+      console.log(prevProps, nextState);
+      console.log('shouldComponentUpdate()');
+      return true;
+    }
+
+    /*
+      可以获取更新后DOM元素，从而进行操作
+    */
+    componentDidUpdate() {
+      console.log('componentDidUpdate()');
+    }
+
+    /*
+      做一些收尾工作：清除定时器、全局变量、取消ajax请求。。。
+    */
+    componentWillUnmount() {
+      console.log('componentWillUnmount()');
+    }
+    
+    /*
+      渲染
+     */
+    render() {
+      console.log('render()');
+      return <h2>LifeCircle</h2>
+    }
+  }
+
+  ReactDOM.render(<LifeCircle/>, document.getElementById('example'));
+
 </script>
 </body>
 </html>
