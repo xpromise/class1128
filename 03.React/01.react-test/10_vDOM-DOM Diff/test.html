@@ -14,7 +14,9 @@
 <script type="text/babel">
   /*
   验证:
-  虚拟DOM+DOM Diff算法: 最小化页面重绘
+    虚拟DOM+DOM Diff算法: 最小化页面重绘、减少重排重绘的次数
+  文章：
+    https://zhuanlan.zhihu.com/p/20346379
   */
 
   class HelloWorld extends React.Component {
@@ -41,6 +43,8 @@
           <span>It is {this.state.date.toTimeString()}</span>
         </p>
       )
+
+
     }
   }
 

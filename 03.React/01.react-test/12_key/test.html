@@ -20,6 +20,10 @@
    http://taobaofed.org/blog/2016/08/24/react-key/?utm_source=tuicool&utm_medium=referral
    简单来说: 当数组中的数据发生变化时: React 比较更新前后的元素 key 值，
    如果相同则更新，如果不同则销毁之前的，重新创建一个元素
+
+   结论：
+    如果今后需要往数组最前面插入数据，必须用id作为key的值，
+    如果不是，而是往最后追加，可以用index作为key的值，（如果数据中有id属性，就用id）
    */
 
   function ListItem({id, name, age}) {

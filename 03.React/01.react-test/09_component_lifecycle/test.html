@@ -18,6 +18,7 @@
     3. 点击按钮从界面中移除组件界面
    */
 
+
   class LifeCircle extends React.Component {
     /*
       1. 初始化state
@@ -25,8 +26,9 @@
       3. 绑定函数的this指向（过去）
      */
     constructor(props) {
-      super(props);
+      super(props); // props作用：用来在constructor函数中操作this.props
       console.log('constructor()');
+      console.log(this.props);
       this.state = {
         isUpdated: false
       }
