@@ -19,7 +19,7 @@ export default class List extends Component{
   
   static getDerivedStateFromProps(nextProps, prevState) {
     // nextProps.searchName 帮助我区别是否是第一次请求，如果是，值就为空
-    // prevState.success 上一次状态success（如果success有值，说明请求成功，该显示成功的数据）
+    // isSearching 代表正在搜索中, 此时就不会重新更新状态
     if (nextProps.searchName && !isSearching) {
       // 在请求还未成功之前，切换为loading状态
       isSearching = true;
@@ -52,6 +52,7 @@ export default class List extends Component{
               }
             })
           }, () => {
+            // 会在渲染完成后重新调用
             isSearching = false;
           })
         })
@@ -62,6 +63,7 @@ export default class List extends Component{
             error: err
           })
         }, () => {
+          // 组件渲染完毕后才调用，不能再重新更新状态，所以定义成变量
           isSearching = false;
         })
     }
@@ -69,7 +71,6 @@ export default class List extends Component{
   
   render() {
     const { isFirstView, isLoading, success, error } = this.state;
-    
     if (isFirstView) {
       return <h2>enter name to search</h2>;
     } else if (isLoading) {
