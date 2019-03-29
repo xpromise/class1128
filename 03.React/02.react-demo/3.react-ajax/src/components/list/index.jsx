@@ -18,21 +18,17 @@ function successCallback(res) {
       }
     })
   }, () => {
-    // 更新完成状态后才调用回调函数
+    // 更新完成状态后才调用回调函数，否则会触发多次请求
     isFirst = true;
   })
 }
 function errorCallback(err) {
-  /*
-  filter 新数组和原数组的长度不一样，里面的值和原来的值一模一样
-  map 新数组和原数组的长度一样，里面的值和原来的值不一样
- */
   // 更新状态
   this.setState({
     isLoading: false,
     error: err
   }, () => {
-    // 更新完成状态后才调用回调函数
+    // 更新完成状态后才调用回调函数，否则会触发多次请求
     isFirst = true;
   })
 }
@@ -47,6 +43,7 @@ export default class List extends Component{
   
   constructor(props) {
     super(props);
+    // 初始化状态
     this.state = {
       isFirstView: true,  // 是否初次显示
       isLoading: false,  // 是否加载中
@@ -57,7 +54,7 @@ export default class List extends Component{
     errorCallback = errorCallback.bind(this);
   }
   
-  // 保证组件渲染完毕后在发
+  // 函数this是undefined
   static getDerivedStateFromProps(nextProps, prevState) {
     const { searchName } = nextProps;
     // 因为里面更新状态，重新调用getDerivedStateFromProps方法，又会导致多发请求，isFirst来保证点击一次search只发一次请求
@@ -66,10 +63,6 @@ export default class List extends Component{
         .then(successCallback)
         .catch(errorCallback)
       // 将状态切换为 loading
-      /*this.setState({
-        isLoading: true,
-        isFirstView: false
-      })*/
       isFirst = false;
       // 在请求还未成功之前，切换为loading状态
       return {
