@@ -37,9 +37,9 @@
       将来的17版本将被标记为UNSAFE，在未来18版本直接被废弃
       这个函数一般没用
      */
-    componentWillMount() {
+    /*componentWillMount() {
       console.log('componentWillMount()');
-    }
+    }*/
     /*
       1. 发送ajax请求
       2. 设置异步任务 --> 绑定事件或者设置定时器等
@@ -48,12 +48,27 @@
       console.log('componentDidMount()');
       // 设置定时器
       setTimeout(() => {
-        /*this.setState({
+        this.setState({
           isUpdated: true
-        })*/
+        })
 
-        ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+        // ReactDOM.unmountComponentAtNode(document.getElementById('example'));
       }, 1000)
+    }
+  
+    static getDerivedStateFromProps(nextProps, prevState) {
+      console.log('getDerivedStateFromProps()');
+      console.log(nextProps, prevState);
+      // 返回nextState, 更新状态
+      // return {isUpdated: true}
+      // 返回null，不更新状态
+      return null;
+    }
+  
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+      console.log('getSnapshotBeforeUpdate()');
+      console.log(prevProps, prevState);
+      return 123;
     }
     /*
       专门用来做React性能优化的：将之前的状态/属性和当前的状态/属性进行对比，如果一样，就不更新，如果不一样就更新
@@ -69,8 +84,10 @@
     /*
       可以获取更新后DOM元素，从而进行操作
     */
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
       console.log('componentDidUpdate()');
+      console.log(prevProps, prevState, snapshot);
+      console.log(this.state);
     }
 
     /*
