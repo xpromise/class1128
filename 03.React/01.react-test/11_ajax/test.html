@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../js/react.development.js"></script>
 <script type="text/javascript" src="../js/react-dom.development.js"></script>
 <script type="text/javascript" src="../js/babel.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script type="text/babel">
   /*
   需求:
@@ -19,6 +20,53 @@
     4. 测试接口: https://api.github.com/search/repositories?q=r&sort=stars
   */
 
+  class MostPopularRepo extends React.Component {
+    state = {
+      name: '',
+      url: ''
+    }
+
+    componentDidMount() {
+      // 发送ajax请求
+      /*axios.get('https://api.github.com/search/repositories?q=r&sort=stars')
+        .then(response => {
+          console.log(response);
+          const { name, html_url } = response.data.items[0];
+          this.setState({
+            name,
+            url: html_url
+          })
+        })
+        .catch(err => {
+          console.log(err);
+        })*/
+
+      fetch('https://api.github.com/search/repositories?q=v&sort=stars')
+        .then(res => res.json())
+        .then(response => {
+          console.log(response);
+          const { name, html_url } = response.items[0];
+          this.setState({
+            name,
+            url: html_url
+          })
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+
+    render() {
+      const { name, url } = this.state;
+      if (name) {
+        return <h2>Most Popular Repo is <a href={url}>{name}</a></h2>;
+      } else {
+        return <h2>loading...</h2>;
+      }
+    }
+  }
+
+  ReactDOM.render(<MostPopularRepo />, document.getElementById('example'));
 </script>
 </body>
 </html>

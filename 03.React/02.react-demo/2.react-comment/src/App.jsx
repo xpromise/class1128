@@ -10,14 +10,14 @@ export default class App extends Component {
       {username: 'rose', content: 'I Love Jack', id: 2}
     ]
   }
-  
+  // 添加评论
   updateComment = (comment) => {
     const { comments } = this.state;
     this.setState({
       comments: [{...comment, id: comments.length + 1}, ...comments]
     })
   }
-  
+  // 删除评论
   delComment = (id) => {
     this.setState({
       comments: this.state.comments.filter((item) => item.id !== id)
