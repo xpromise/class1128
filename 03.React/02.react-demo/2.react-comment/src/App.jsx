@@ -6,14 +6,21 @@ import CommentList from './components/comment-list';
 export default class App extends Component {
   state = {
     comments: [
-      {username: 'jack', content: 'I Love Rose'},
-      {username: 'rose', content: 'I Love Jack'}
+      {username: 'jack', content: 'I Love Rose', id: 1},
+      {username: 'rose', content: 'I Love Jack', id: 2}
     ]
   }
   
   updateComment = (comment) => {
+    const { comments } = this.state;
     this.setState({
-      comments: [comment, ...this.state.comments]
+      comments: [{...comment, id: comments.length + 1}, ...comments]
+    })
+  }
+  
+  delComment = (id) => {
+    this.setState({
+      comments: this.state.comments.filter((item) => item.id !== id)
     })
   }
   
@@ -33,7 +40,7 @@ export default class App extends Component {
         </header>
         <div className="container">
           <AddComment updateComment={this.updateComment}/>
-          <CommentList comments={comments}/>
+          <CommentList comments={comments} delComment={this.delComment}/>
         </div>
       </div>
     )
