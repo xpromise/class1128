@@ -2,69 +2,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-function successCallback(res) {
-  /*
-  filter 新数组和原数组的长度不一样，里面的值和原来的值一模一样
-  map 新数组和原数组的长度一样，里面的值和原来的值不一样
- */
-  // 更新状态
-  this.setState({
-    isLoading: false,
-    success: res.data.items.map((item) => {
-      return {
-        name: item.login,
-        url: item.html_url,
-        image: item.avatar_url
-      }
-    })
-  }, () => {
-    // 更新完成状态后才调用回调函数，否则会触发多次请求
-    isFirst = true;
-  })
-}
-function errorCallback(err) {
-  // 更新状态
-  this.setState({
-    isLoading: false,
-    error: err
-  }, () => {
-    // 更新完成状态后才调用回调函数，否则会触发多次请求
-    isFirst = true;
-  })
-}
-
-// 标识当前请求是第一次
-let isFirst = true;
+let isSearching =  false  // 代表正在搜索中
 
 export default class List extends Component{
   static propTypes = {
     searchName: PropTypes.string.isRequired
   }
   
-  constructor(props) {
-    super(props);
-    // 初始化状态
-    this.state = {
-      isFirstView: true,  // 是否初次显示
-      isLoading: false,  // 是否加载中
-      success: null,    // 成功的数据
-      error: null       // 失败的错误
-    }
-    successCallback = successCallback.bind(this);
-    errorCallback = errorCallback.bind(this);
+  // 初始化状态
+  state = {
+    isFirstView: true,  // 是否初次显示
+    isLoading: false,  // 是否加载中
+    success: null,    // 成功的数据
+    error: null,       // 失败的错误
   }
   
-  // 函数this是undefined
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { searchName } = nextProps;
-    // 因为里面更新状态，重新调用getDerivedStateFromProps方法，又会导致多发请求，isFirst来保证点击一次search只发一次请求
-    if (searchName && isFirst) {
-      axios.get(`https://api.github.com/search/users?q=${searchName}`)
-        .then(successCallback)
-        .catch(errorCallback)
-      // 将状态切换为 loading
-      isFirst = false;
+    // nextProps.searchName 帮助我区别是否是第一次请求，如果是，值就为空
+    // prevState.success 上一次状态success（如果success有值，说明请求成功，该显示成功的数据）
+    if (nextProps.searchName && !isSearching) {
       // 在请求还未成功之前，切换为loading状态
+      isSearching = true;
       return {
         isLoading: true,
         isFirstView: false
@@ -74,11 +32,44 @@ export default class List extends Component{
       return null;
     }
   }
+  // 为了让渲染优先  不能陷入死循环，一定要有退出条件
+  componentDidUpdate(prevProps, prevState) {
+    const { searchName } = this.props;
+    // prevProps.searchName 上一次的属性值
+    // searchName 当前最新的属性值
+    // 如果不相等，才说明用户需要请求新的数据
+    if (prevProps.searchName !== searchName) {
+      axios.get(`https://api.github.com/search/users?q=${searchName}`)
+        .then((res) => {
+          // 更新状态
+          this.setState({
+            isLoading: false,
+            success: res.data.items.map((item) => {
+              return {
+                name: item.login,
+                url: item.html_url,
+                image: item.avatar_url
+              }
+            })
+          }, () => {
+            isSearching = false;
+          })
+        })
+        .catch((err) => {
+          // 更新状态
+          this.setState({
+            isLoading: false,
+            error: err
+          })
+        }, () => {
+          isSearching = false;
+        })
+    }
+  }
   
   render() {
     const { isFirstView, isLoading, success, error } = this.state;
     
-    console.log(isFirstView, isLoading, success, error);
     if (isFirstView) {
       return <h2>enter name to search</h2>;
     } else if (isLoading) {
