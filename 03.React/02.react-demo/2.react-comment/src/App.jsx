@@ -4,7 +4,22 @@ import AddComment from './components/add-comment';
 import CommentList from './components/comment-list';
 
 export default class App extends Component {
+  state = {
+    comments: [
+      {username: 'jack', content: 'I Love Rose'},
+      {username: 'rose', content: 'I Love Jack'}
+    ]
+  }
+  
+  updateComment = (comment) => {
+    this.setState({
+      comments: [comment, ...this.state.comments]
+    })
+  }
+  
   render() {
+    const { comments } = this.state;
+    
     return (
       <div>
         <header className="site-header jumbotron">
@@ -17,8 +32,8 @@ export default class App extends Component {
           </div>
         </header>
         <div className="container">
-          <AddComment />
-          <CommentList />
+          <AddComment updateComment={this.updateComment}/>
+          <CommentList comments={comments}/>
         </div>
       </div>
     )
