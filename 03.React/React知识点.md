@@ -17,4 +17,6 @@
   * 生命周期函数this指向组件的实例对象
   * 其他自定义函数this指向undefined  
 * 基本class中方法，this指向实例对象
+
+
   
