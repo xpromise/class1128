@@ -38,6 +38,8 @@ export default class App extends Component{
                   Route: 一旦url变为path对应的值，就加载component中的组件进行显示
                   Redirect: 什么路径都匹配，一旦匹配上就跳转到指定网址
                   Switch: 切换显示（针对内部组件 - 子组件） --> 从上到下匹配，一旦有一个匹配上，其他就不看了
+                  
+                  通过Route加载的组件就是路由组件，路由组件默认有三个属性：history、location、match
                 */}
                 <Switch>
                   <Route path="/about" component={About}/>
