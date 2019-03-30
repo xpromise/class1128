@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-let isSearching =  false  // 代表正在搜索中
+let isSearching = false;  // 代表正在搜索中
 
 export default class List extends Component{
   static propTypes = {
@@ -17,7 +17,7 @@ export default class List extends Component{
     error: null,       // 失败的错误
   }
   
-  static getDerivedStateFromProps(nextProps, prevState) {
+  /*static getDerivedStateFromProps(nextProps, prevState) {
     // nextProps.searchName 帮助我区别是否是第一次请求，如果是，值就为空
     // isSearching 代表正在搜索中, 此时就不会重新更新状态
     if (nextProps.searchName && !isSearching) {
@@ -67,6 +67,57 @@ export default class List extends Component{
           isSearching = false;
         })
     }
+  }*/
+  
+  // 静态方法没有this
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // 第一次渲染不能切换loading
+    // 如果第一次更新状态为成功的状态时，不能切换loading --> isSearching
+    if (nextProps.searchName && !isSearching) {
+      isSearching = true;
+      return {isFirstView: false, isLoading: true};
+    } else {
+      return null;
+    }
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    // 最新的props
+    const { searchName } = this.props;
+    
+    // 判断上一次的searchName和当前新的searchName是否相等
+    if (searchName !== prevProps.searchName) {
+      // 发送ajax请求
+      axios.get(`https://api.github.com/search/users?q=${searchName}`)
+        .then((res) => {
+          // 更新状态
+          this.setState({
+            isLoading: false,
+            success: res.data.items.map((item) => {
+              return {
+                name: item.login,
+                url: item.html_url,
+                image: item.avatar_url
+              }
+            })
+          }, () => {
+            // 会在渲染完成后重新调用，用来获取更新后的状态值
+            // 保证下一次用户search，能够切换为loading状态
+            isSearching = false;
+          })
+        })
+        .catch((err) => {
+          // 更新状态
+          this.setState({
+            isLoading: false,
+            error: err
+          })
+        }, () => {
+          // 组件渲染完毕后才调用，不能再重新更新状态，所以定义成变量
+          isSearching = false;
+        })
+    }
+    
   }
   
   render() {

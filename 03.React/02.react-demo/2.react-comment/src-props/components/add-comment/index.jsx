@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { publish } from 'pubsub-js';
+import PropTypes from 'prop-types';
 
 export default class AddComment extends Component {
+  static propTypes = {
+    updateComment: PropTypes.func.isRequired
+  }
   
   state = {
     username: '',
@@ -17,7 +20,7 @@ export default class AddComment extends Component {
       return;
     }
     // 添加评论
-    publish('ADD_COMMENT', {username, content});
+    this.props.updateComment({username, content});
     // 清空用户填写的数据
     this.setState({username: '', content: ''});
   }

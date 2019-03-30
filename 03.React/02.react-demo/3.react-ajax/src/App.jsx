@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import Search from './components/search';
 import List from './components/list';
 
-export default class App extends Component{
+export default class App extends PureComponent{
   state = {
     searchName: ''
   }
@@ -13,6 +13,7 @@ export default class App extends Component{
   }
   
   render() {
+    console.log('render()');
     const { searchName } = this.state;
     return (
       <div className="container">
