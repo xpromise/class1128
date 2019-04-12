@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-import { publish } from 'pubsub-js';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class AddComment extends Component {
+import { addComment } from '../../redux/action-creators';
+
+let id = 2;
+
+class AddComment extends Component {
+  static propTypes = {
+    addComment: PropTypes.func.isRequired
+  }
   
   state = {
     username: '',
@@ -17,7 +25,7 @@ export default class AddComment extends Component {
       return;
     }
     // 添加评论
-    publish('ADD_COMMENT', {username, content});
+   this.props.addComment({username, content, id: ++id});
     // 清空用户填写的数据
     this.setState({username: '', content: ''});
   }
@@ -53,3 +61,10 @@ export default class AddComment extends Component {
     )
   }
 }
+
+/***************** redux相关代码 *****************/
+
+export default connect(
+  null,
+  { addComment }
+)(AddComment);
