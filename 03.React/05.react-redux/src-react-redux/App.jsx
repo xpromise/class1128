@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { increment, decrement, incrementAsync } from './redux/action-creators';
+import { increment, decrement } from './redux/action-creators';
 
 class App extends Component {
   static propTypes = {
     number: PropTypes.number.isRequired,
     increment: PropTypes.func.isRequired,
     decrement: PropTypes.func.isRequired,
-    incrementAsync: PropTypes.func.isRequired,
   }
 
   state = {
@@ -40,8 +39,10 @@ class App extends Component {
   }
 
   incrementAsync = () => {
-    const { value } = this.state;
-    this.props.incrementAsync(value);
+    setTimeout(() => {
+      const { value } = this.state;
+      this.props.increment(value);
+    }, 1000)
   }
 
 
@@ -97,8 +98,8 @@ export default connect(
 
 // 简写方式
 export default connect(
-  (state) => ({number: state.number}),
-  { increment, decrement, incrementAsync }
+  (state) => ({number: state}),
+  { increment, decrement }
 )(App);
 
 /*

@@ -2,7 +2,6 @@
   用来根据之前的状态数据和action对象来生成新的状态
   新的状态会交给store对象管理
  */
-import { combineReducers } from 'redux';
 import { INCREMENT, DECREMENT } from './action-types';
 
 // 函数名一般与要操作的状态数据一致
@@ -19,15 +18,5 @@ function number(previousState = 0, action) {
   }
 }
 
-function value(previousState = 0, action) {
-  switch (action.type) {
-    default :
-      return previousState;
-  }
-}
-
 // 暴露出去
-export default combineReducers({
-  number,
-  value
-});
+export default number;
